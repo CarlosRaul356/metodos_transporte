@@ -1,24 +1,17 @@
 import 'dart:convert';
-
-import 'package:isar/isar.dart';
 import 'package:metodos_transporte/domain/entities/cell.dart';
 
-part 'transport_problem.g.dart';
-
-
-@collection
-class Transportproblem {
-  Id id = Isar.autoIncrement;
+class CustomTransportProblem {
+  int? id;
   String name = "";
   String arrayJson = "";
 
-  @ignore
   List<List<Cell>> get array => decode(arrayJson);
   set array(List<List<Cell>> value){
     arrayJson = encode(value);
   }
 
-  Transportproblem({required this.name, required this.arrayJson});
+  CustomTransportProblem({required this.name, required this.arrayJson, this.id});
 
   static String encode(List<List<Cell>> array)=>jsonEncode(
     array.map((row)=>row.map((element)=>element.toJson()).toList()).toList()

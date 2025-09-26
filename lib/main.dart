@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:metodos_transporte/config/router/router.dart';
 import 'package:metodos_transporte/config/theme/app_theme.dart';
 
-void main() {
-  runApp(const MainApp());
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(ProviderScope(child: MainApp()));
 }
 
 class MainApp extends StatelessWidget {
