@@ -13,7 +13,7 @@ class TransportProblemsRepositoryImpl implements LocalStorageRepository{
   }
 
   @override
-  Future<CustomTransportProblem?> createUpdateTransportProblem(CustomTransportProblem transportProblem) {
+  Future<CustomTransportProblem> createUpdateTransportProblem(CustomTransportProblem transportProblem) {
     return datasource.createUpdateTransportProblem(transportProblem);
   }
 

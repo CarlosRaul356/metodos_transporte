@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -30,7 +31,7 @@ class _HomeView extends StatelessWidget {
             height: 100,
             child: FilledButton.icon(
               onPressed: () {
-                
+                context.push("/select_transport_problem");
               }, 
               label: Text("Metodo De Vogel", style: TextStyle(fontSize: 20),),
               icon: Icon(Icons.sort,size: 30,),

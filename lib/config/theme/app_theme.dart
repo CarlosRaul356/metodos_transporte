@@ -17,6 +17,18 @@ class AppTheme {
         backgroundColor: WidgetStatePropertyAll(Color(0xFFB71C1C)),
         shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(30)))
       )
+    ),
+
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: Color(0xFFB71C1C),
+    ),
+
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: Color(0xFFB71C1C),
+        iconColor: Colors.black,
+        textStyle:TextStyle(fontWeight: FontWeight.w500,fontSize: 18),
+      )
     )
   );
 }

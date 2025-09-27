@@ -10,7 +10,7 @@ class DriftDatasource implements LocalStorageDatasource{
   DriftDatasource([AppDatabase? databaseToUse]):database = databaseToUse??db;
 
   @override
-  Future<CustomTransportProblem?> createUpdateTransportProblem(CustomTransportProblem transportProblem) async{
+  Future<CustomTransportProblem> createUpdateTransportProblem(CustomTransportProblem transportProblem) async{
       if(transportProblem.id == null){
         final int id = await database.into(database.transportProblems).insert(TransportProblemsCompanion.insert(
           name: transportProblem.name,
@@ -21,7 +21,7 @@ class DriftDatasource implements LocalStorageDatasource{
       final transportProblemCompanionToUpdate = TransportProblemsCompanion(
         name: Value(transportProblem.name),
         arrayJson: Value(transportProblem.arrayJson),
-        id: Value(transportProblem.id!)
+        id: Value(transportProblem.id!),
       );
 
       await database.update(database.transportProblems).replace(transportProblemCompanionToUpdate);
@@ -29,8 +29,18 @@ class DriftDatasource implements LocalStorageDatasource{
   }
 
   @override
-  Future<List<CustomTransportProblem>> getTransportProblems({int limit = 10, int offset = 0}) {
-    throw UnimplementedError();
+  Future<List<CustomTransportProblem>> getTransportProblems({int limit = 10, int offset = 0}) async{
+    final query = database.select(database.transportProblems)..orderBy([(t)=>OrderingTerm.desc(t.id)])
+      ..limit(limit,offset: offset);
+    final transportProblemsRows = await query.get();
+    final customTransportProblems = transportProblemsRows.map(
+      (row)=> CustomTransportProblem(
+        name: row.name, 
+        arrayJson:row.arrayJson,
+        id: row.id 
+      ),
+    ).toList();
+    return customTransportProblems;
   }
 
   @override

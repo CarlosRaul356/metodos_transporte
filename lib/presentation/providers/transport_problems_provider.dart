@@ -2,16 +2,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:metodos_transporte/domain/domain.dart';
 import 'package:metodos_transporte/presentation/providers/local_storage_repository_provider.dart';
 
-final transportProblemsProvider = NotifierProvider<TransportProblemsNotifier,TransportProblemsState>(() {
-  return TransportProblemsNotifier();
-},);
+final transportProblemsProvider = NotifierProvider<TransportProblemsNotifier,TransportProblemsState>((TransportProblemsNotifier.new));
 
 class TransportProblemsNotifier extends Notifier<TransportProblemsState> {
   late final LocalStorageRepository repository;
   @override
   TransportProblemsState build() {
     repository = ref.watch(localStorageRepositoryProvider);
-    loadTransportProblems();
     return TransportProblemsState();
   }
 
@@ -30,15 +27,12 @@ class TransportProblemsNotifier extends Notifier<TransportProblemsState> {
     );
   }
 
-  Future<CustomTransportProblem?> createUpdateTransportProblem(CustomTransportProblem transportProblem)async{
+  Future<CustomTransportProblem> createUpdateTransportProblem(CustomTransportProblem transportProblem)async{
     final newTransportProblem = await repository.createUpdateTransportProblem(transportProblem);
-    if(newTransportProblem == null){
-      return null;
-    }
     state = state.copyWith(
       transportProblems: [
-        // ...state.transportProblems.where((element) => element.id!=newTransportProblem.id,),
-        newTransportProblem
+        newTransportProblem,
+        ...state.transportProblems.where((element) => element.id!=newTransportProblem.id,),
       ]
     );
     return newTransportProblem;
