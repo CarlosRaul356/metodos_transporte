@@ -31,4 +31,9 @@ class Cell {
     );
   }
 
+  Cell copy()=>Cell(
+    value: _value,
+    isActive: _isActive
+  );
+
 } 

@@ -29,25 +29,61 @@ class _VogelMethodView extends StatefulWidget {
 
 class _VogelMethodViewState extends State<_VogelMethodView> {
 
-  late List<Widget> tables;
+  late final List<Widget> tables;
+  late final pageController = PageController();
+  int step = 1;
+  
   @override
   void initState() {
-  tables = Vogel(vogelArray: widget.transportProblem.array).calculateVogelMethod();
     super.initState();
+    tables = Vogel(vogelArray: widget.transportProblem.array).calculateVogelMethod();
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
   }
   @override
   Widget build(BuildContext context) {
+    final textStyles = Theme.of(context).textTheme;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.transportProblem.name),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        child: PageView(
+        child: (tables.length>1)?Stack(
           children: [
-            ...tables
+            PageView(
+              controller: pageController,
+              children: [
+                ...tables
+              ],
+            ),
+            Align(
+              alignment: AlignmentGeometry.bottomCenter,
+              child: ListTile(
+                title: Center(child: Text("Paso $step", style: textStyles.titleSmall,)),
+                leading: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      step--;
+                      pageController.animateToPage(step-1, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+                    });
+                  }, icon: Icon(Icons.arrow_back)),
+                trailing: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      step++;
+                      pageController.animateToPage(step-1, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+                    });
+                  }, icon: Icon(Icons.arrow_forward)),
+              ),
+            )
           ],
-        ),
+        ):tables.first,
       ),
     );
   }

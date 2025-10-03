@@ -116,6 +116,8 @@ class _FillTableScreenState extends ConsumerState<FillTableScreen> {
                                             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
                                           ),
                                   );
+                                }else if(j==widget.destinations+1 && i == widget.sources+1){
+                                  return SizedBox();
                                 }
                                 else {
                                   return Container(

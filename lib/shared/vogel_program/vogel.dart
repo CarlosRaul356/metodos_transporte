@@ -25,7 +25,11 @@ class Vogel {
 		  	calculateSourcesPenal();
 		  	calculateDestinationsPenal();
 		  	assignResources(identifyGreaterPenal());
-		  	tables.add(VogelTable(transportProblem: vogelArray, answers: answers));
+        final arrayCopy = vogelArray.map(
+          (e)=>e.map((e) => e.copy(),).toList()).toList();
+        final Map<String,int> answersCopy = Map.from(answers);
+
+		  	tables.add(VogelTable(transportProblem: arrayCopy, answers: answersCopy));
 		  }
       return tables;
     }else{
