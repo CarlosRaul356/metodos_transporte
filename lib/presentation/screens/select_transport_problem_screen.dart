@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:metodos_transporte/domain/domain.dart';
 import 'package:metodos_transporte/presentation/dialogs/create_transport_problem_dialog.dart';
 import 'package:metodos_transporte/presentation/providers/transport_problems_provider.dart';
 
@@ -68,10 +70,33 @@ class _SelectTransportProblemViewState extends ConsumerState<_SelectTransportPro
         controller: scrollController,
         children: [
           ...transportProblems.map(
-            (problem)=>Text(problem.name)
+            (problem)=>Column(
+              children: [
+                _TransportTile(transportProblem: problem),
+                SizedBox(height: 10,)
+              ],
+            )
           )
         ],
       ),
+    );
+  }
+}
+
+class _TransportTile extends StatelessWidget {
+  const _TransportTile({required this.transportProblem});
+  final CustomTransportProblem transportProblem;
+
+  @override
+  Widget build(BuildContext context) {
+    final textStyles = Theme.of(context).textTheme;
+    return ListTile(
+      minTileHeight: 70,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(15)),
+      tileColor: Color.fromARGB(255, 177, 177, 177),
+      title: Text(transportProblem.name,style: textStyles.titleSmall,),
+      trailing: Icon(Icons.arrow_forward_ios_sharp),
+      onTap: () => context.push("/vogel_method/${transportProblem.id}"),
     );
   }
 }

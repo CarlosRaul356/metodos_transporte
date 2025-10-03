@@ -59,14 +59,12 @@ class _FillTableScreenState extends ConsumerState<FillTableScreen> {
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-          child: Column(
+          child: ListView(
             children: [
-              Text("Costos",style: textStyles.titleMedium,),
+              Text("Costos",style: textStyles.titleMedium,textAlign: TextAlign.center,),
               SizedBox(height: 20,),
               Align(
                 alignment: Alignment.topCenter,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Align(
@@ -148,7 +146,7 @@ class _FillTableScreenState extends ConsumerState<FillTableScreen> {
                     ),
                   ),
                 ),
-              ),
+              
             ],
           ),
         ),

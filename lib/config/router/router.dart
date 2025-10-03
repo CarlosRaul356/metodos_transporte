@@ -12,8 +12,11 @@ final router = GoRouter(
       builder: (context, state) => HomeScreen(),
     ),
     GoRoute(
-      path: "/vogel_method",
-      builder: (context, state) => VogelMethodScreen(),
+      path: "/vogel_method/:id",
+      builder: (context, state){
+        int id = int.tryParse(state.pathParameters["id"]??"-1")!;
+        return VogelMethodScreen(id: id,);
+      }
     ),
     GoRoute(
       path: "/select_transport_problem",

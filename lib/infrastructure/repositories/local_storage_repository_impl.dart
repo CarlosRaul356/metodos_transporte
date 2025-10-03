@@ -21,4 +21,9 @@ class TransportProblemsRepositoryImpl implements LocalStorageRepository{
   Future<void> removeTransportProblem(int problemId) {
     return datasource.removeTransportProblem(problemId);
   }
+  
+  @override
+  Future<CustomTransportProblem?> getTransportProblemById(int id) {
+    return datasource.getTransportProblemById(id);
+  }
 }

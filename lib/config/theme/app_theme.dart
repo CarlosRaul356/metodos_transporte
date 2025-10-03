@@ -29,6 +29,6 @@ class AppTheme {
         iconColor: Colors.black,
         textStyle:TextStyle(fontWeight: FontWeight.w500,fontSize: 18),
       )
-    )
+    ),
   );
 }

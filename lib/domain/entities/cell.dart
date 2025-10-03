@@ -1,7 +1,7 @@
 class Cell {
   double _value = 0;
   bool _isActive = false;
-  Cell({required double value, bool isActive = false}){
+  Cell({required double value, bool isActive = true}){
     setValue(value);
     setIsActive(isActive);
   }
@@ -26,7 +26,7 @@ class Cell {
 
   factory Cell.fromJson(Map<String,dynamic> json){
     return Cell(
-      value: double.tryParse(json["value"])??0.0,
+      value: json["value"],
       isActive: json["isActive"]
     );
   }

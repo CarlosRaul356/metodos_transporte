@@ -50,5 +50,16 @@ class DriftDatasource implements LocalStorageDatasource{
     await deleteQuery.go();
     return;
   }
+  
+  @override
+  Future<CustomTransportProblem?> getTransportProblemById(int id) async{
+    final query = database.select(database.transportProblems)..where((problem)=>problem.id.equals(id));
+    final problem = await query.getSingleOrNull();
+    return (problem!=null)?CustomTransportProblem(
+      name: problem.name, 
+      arrayJson: problem.arrayJson,
+      id: problem.id
+    ):null;
+  }
 
 }
