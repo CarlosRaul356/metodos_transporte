@@ -21,6 +21,10 @@ class Vogel {
     List<VogelTable> tables = [];
     if(itsSolvable()){
       addPenalColumnsAndRows();
+      final arrayCopy = vogelArray.map(
+        (e)=>e.map((e) => e.copy(),).toList()).toList();
+      final Map<String,int> answersCopy = Map.from(answers);
+      tables.add(VogelTable(transportProblem: arrayCopy, answers: answersCopy));
 		  while(!isVogelCompleted()) {
 		  	calculateSourcesPenal();
 		  	calculateDestinationsPenal();

@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:metodos_transporte/domain/domain.dart';
 import 'package:metodos_transporte/presentation/providers/transport_problem_provider.dart';
 import 'package:metodos_transporte/shared/vogel_program/vogel.dart';
-import 'package:metodos_transporte/shared/widgets/widgets.dart';
 
 class VogelMethodScreen extends ConsumerWidget {
   const VogelMethodScreen({super.key, required this.id});
@@ -54,34 +53,40 @@ class _VogelMethodViewState extends State<_VogelMethodView> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        child: (tables.length>1)?Stack(
+        child: (tables.length>1)?Column(
           children: [
-            PageView(
-              controller: pageController,
-              children: [
-                ...tables
-              ],
-            ),
-            Align(
-              alignment: AlignmentGeometry.bottomCenter,
-              child: ListTile(
-                title: Center(child: Text("Paso $step", style: textStyles.titleSmall,)),
-                leading: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      step--;
-                      pageController.animateToPage(step-1, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
-                    });
-                  }, icon: Icon(Icons.arrow_back)),
-                trailing: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      step++;
-                      pageController.animateToPage(step-1, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
-                    });
-                  }, icon: Icon(Icons.arrow_forward)),
+            Expanded(
+              child: PageView(
+                physics: NeverScrollableScrollPhysics(),
+                controller: pageController,
+                children: [
+                  ...tables
+                ],
               ),
-            )
+            ),    
+            ListTile(
+              title: Center(child: Text("Paso $step", style: textStyles.titleSmall,)),
+              leading: IconButton(
+                onPressed: () {
+                  setState(() {
+                    if(step!=1){
+                      step--;
+                    }
+                    pageController.animateToPage(step-1, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+                  });
+                }, icon: Icon(Icons.arrow_back)),
+              trailing: IconButton(
+                onPressed: () {
+                  setState(() {
+                    if(step!=tables.length){
+                      step++;
+                    }
+                    pageController.animateToPage(step-1, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+                  });
+                }, icon: Icon(Icons.arrow_forward)),
+            ),
+            SizedBox(height: 50,)
+            
           ],
         ):tables.first,
       ),

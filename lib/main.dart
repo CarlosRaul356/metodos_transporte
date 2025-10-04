@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:metodos_transporte/config/router/router.dart';
 import 'package:metodos_transporte/config/theme/app_theme.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  GoogleFonts.config.allowRuntimeFetching = false;
   runApp(ProviderScope(child: MainApp()));
 }
 

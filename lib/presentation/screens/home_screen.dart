@@ -37,6 +37,11 @@ class _HomeView extends StatelessWidget {
               icon: Icon(Icons.sort,size: 30,),
             ),
           ),
+          SizedBox(height: 50,),
+          Text("Integrantes:", ),
+          Text("Velazquez Araujo Luis Fernando"),
+          Text("Burgos Corvera Kiara Daniela"),
+          Text("Inzunza Medina Carlos Raul"),
         ],
       ),
     );

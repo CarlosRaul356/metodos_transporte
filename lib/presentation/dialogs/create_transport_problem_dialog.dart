@@ -37,7 +37,6 @@ class _CreateDialogViewState extends State<_CreateDialogView> {
   Widget build(BuildContext context) {
     final textStyles = Theme.of(context).textTheme;
     final textFormDecoration = InputDecoration(
-      errorStyle: TextStyle(fontSize: 0,height: 0),
       isDense: true,
       enabledBorder: UnderlineInputBorder(
         borderSide: BorderSide(color: Colors.grey)
@@ -52,17 +51,17 @@ class _CreateDialogViewState extends State<_CreateDialogView> {
       child: Form(
         key: _formKey,
         child: SizedBox(
-          height: 340,
+          height: 380,
           child: ListView(
             children: [
               Align(
                 alignment: Alignment.center,
                 child: Text("Crear Problema", style: textStyles.titleSmall?.copyWith(fontWeight: FontWeight.w700,fontSize: 20))
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: 15,),
               Text("Nombre",style: textStyles.titleSmall?.copyWith(fontWeight: FontWeight.w600),),
               SizedBox(
-                height: 30,
+                height: 45,
                 child: TextFormField(
                   validator: (value) {
                     if(value?.isEmpty??false)return "El campo no puede estar vacío";
@@ -70,22 +69,25 @@ class _CreateDialogViewState extends State<_CreateDialogView> {
                   },
                   controller: _nameTextController,
                   cursorColor: Color(0xFFB71C1C),
+                  cursorHeight: 20,
                   decoration: textFormDecoration,
                 ),
               ),
               SizedBox(height: 20,),
               Text("Numero de fuentes",style: textStyles.titleSmall?.copyWith(fontWeight: FontWeight.w600),),
               SizedBox(
-                height: 30,
+                height: 45,
                 child: TextFormField(
                   controller: _sourcesTextController,
                   cursorColor: Color(0xFFB71C1C),
+                  cursorHeight: 20,
                   decoration: textFormDecoration,
                   keyboardType: TextInputType.number,
                   validator: (value){
                     if(value?.isEmpty??false)return "El campo no puede estar vacío";
                     if(int.tryParse(value!)==null)return "El valor no tiene el formato correcto";
                     if(int.tryParse(value)!<2)return "El valor tiene que ser mayor a 2";
+                    if(int.tryParse(value)!>10)return "El valor tiene que ser menor que 10";
                     return null;
                   },
                 ),
@@ -93,16 +95,18 @@ class _CreateDialogViewState extends State<_CreateDialogView> {
               SizedBox(height: 20,),
               Text("Numero de destinos",style: textStyles.titleSmall?.copyWith(fontWeight: FontWeight.w600),),
               SizedBox(
-                height: 30,
+                height: 45,
                 child: TextFormField(
                   keyboardType: TextInputType.number,
                   controller: _destinationsTextController,
                   cursorColor: Color(0xFFB71C1C),
+                  cursorHeight: 20,
                   decoration: textFormDecoration,
                   validator: (value) {
                     if(value?.isEmpty??false)return "El campo no puede estar vacío";
                     if(int.tryParse(value!)==null)return "El valor no tiene el formato correcto";
                     if(int.tryParse(value)!<2)return "El valor tiene que ser mayor a 2";
+                    if(int.tryParse(value)!>10)return "El valor tiene que ser menor que 10";
                     return null;
                   },
                 ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:metodos_transporte/domain/entities/cell.dart';
+import 'package:two_dimensional_scrollables/two_dimensional_scrollables.dart';
 
 class VogelTable extends StatelessWidget {
   const VogelTable({super.key, required this.transportProblem, required this.answers});
@@ -9,88 +10,30 @@ class VogelTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Table(
-          defaultColumnWidth: _PaddedIntrisincWidth(),
-          columnWidths: {
-            0:FixedColumnWidth(60)
-          },
-          border: TableBorder.all(color: const Color.fromARGB(255, 177, 216, 235), width: 1),
-          children: [
-            ...List.generate(transportProblem.length+1, (i) {
-              return TableRow(
-                children: List.generate(transportProblem.first.length+1, (j) {
-                  if(i == 0 && j == 0){
-                    return Container(
-                      color: Color(0xFFB71C1C),
-                      height: 65,
-                    );
-                  }
-                  if(i==0){
-                    if(j==transportProblem.first.length-1){
-                      return _CustomContainer(
-                        child: Center(child: Text("O", style: TextStyle(color: Colors.white),)),
-                      );
-                    }
-                    if(j==transportProblem.first.length){
-                      return _CustomContainer(
-                        child: Center(child: Text("P", style: TextStyle(color: Colors.white),)),
-
-                      );
-
-                    }
-                    return _CustomContainer(
-                      child: Center(child: Text("D$j", style: TextStyle(color: Colors.white),)),
-                    );
-                  }
-                  if(j==0){
-                    if(i==transportProblem.length-1){
-                      return _CustomContainer(
-                        child: Center(child: Text("D", style: TextStyle(color: Colors.white),)),
-                      );
-                    }
-                    if(i==transportProblem.length){
-                      return _CustomContainer(
-                        child: Center(child: Text("P", style: TextStyle(color: Colors.white),)),
-                      );
-                    }
-                    return _CustomContainer(
-                      child: Center(child: Text("F$i", style: TextStyle(color: Colors.white),)),
-                    );
-                  }
-                  if(j==transportProblem.first.length &&(i==transportProblem.length|| i == transportProblem.length-1)){
-                    return SizedBox();
-                  }
-
-                  if(j==transportProblem.first.length || j == transportProblem.first.length-1){
-                    return SizedBox(
-                      height: 65,
-                      child: Center(child: Text("${transportProblem[i-1][j-1].getValue().toInt()}")),
-                    );
-                  }
-
-                  if(i==transportProblem.length || i == transportProblem.length-1){
-                    return SizedBox(
-                      height: 65,
-                      child: Center(child: Text("${transportProblem[i-1][j-1].getValue().toInt()}")),
-                    );
-                  }
-
-                  return _CustomCell(
-                    cost: transportProblem[i-1][j-1].getValue(),
-                    answer: (answers["$i-$j"]!=null)?answers["$i-$j"]:null,
-                  );
-                },)
-              );
-            },)
-          ],
-        ),
-      ),
+    return TableView.builder(
+      rowCount: transportProblem.length+1,
+      columnCount: transportProblem.first.length+1,
+      diagonalDragBehavior: DiagonalDragBehavior.free,
+      columnBuilder: (index) {
+        return TableSpan(
+          extent: FixedSpanExtent(70),
+          backgroundDecoration: TableSpanDecoration(
+            border: SpanBorder(trailing: BorderSide(color: const Color.fromARGB(255, 177, 216, 235),width: 1))
+          )
+        );
+      },
+      rowBuilder: (index){
+        return TableSpan(
+          extent: FixedSpanExtent(65),
+          backgroundDecoration: TableSpanDecoration(
+            border: SpanBorder(trailing: BorderSide(color: const Color.fromARGB(255, 177, 216, 235),width: 1))
+          )
+        );
+      },
+      cellBuilder: (context, vicinity) => _buildCell(vicinity.row, vicinity.column, transportProblem, answers),
     );
+      
+    
   }
 }
 
@@ -109,9 +52,10 @@ class _CustomContainer extends StatelessWidget {
 }
 
 class _CustomCell extends StatelessWidget {
-  const _CustomCell({required this.cost, this.answer});
+  const _CustomCell({required this.cost, this.answer,this.isOff = false});
   final double cost;
   final int? answer;
+  final bool isOff;
 
   @override
   Widget build(BuildContext context) {
@@ -131,7 +75,13 @@ class _CustomCell extends StatelessWidget {
           ),
           Align(
             alignment: AlignmentGeometry.xy(0, 0.65),
-            child: Text((answer==null)?"":"$answer"),
+            child: (answer == null)?SizedBox():CircleAvatar(
+              backgroundColor: Color.fromARGB(255, 235, 2, 2),
+              child: Text("$answer", style: TextStyle(color: Colors.white),),
+            ),
+          ),
+          if(isOff)Container(
+            color: Colors.blueGrey.withOpacity(0.3),
           )
         ],
       ),
@@ -139,20 +89,107 @@ class _CustomCell extends StatelessWidget {
   }
 }
 
-class _PaddedIntrisincWidth extends TableColumnWidth{
 
-  @override
-  double maxIntrinsicWidth(Iterable<RenderBox> cells, double containerWidth) {
-    final intrisincWidth = IntrinsicColumnWidth().minIntrinsicWidth(cells, containerWidth);
-    if(intrisincWidth<=60)return 70;
-    return intrisincWidth + 10;
+TableViewCell _buildCell(int i, int j, List<List<Cell>> transportProblem, Map<String,int> answers){
+  if(i == 0 && j == 0){
+    return TableViewCell(
+      child: Container(
+        color: Color(0xFFB71C1C),
+        height: 65,
+      ),
+    );
+  }
+  if(i==0){
+    if(j==transportProblem.first.length-1){
+      return TableViewCell(
+        child: _CustomContainer(
+          child: Center(child: Text("O", style: TextStyle(color: Colors.white),)),
+        ),
+      );
+    }
+    if(j==transportProblem.first.length){
+      return TableViewCell(
+        child: _CustomContainer(
+          child: Center(child: Text("P", style: TextStyle(color: Colors.white),)),
+        
+        ),
+      );
+
+    }
+    return TableViewCell(
+      child: _CustomContainer(
+        child: Center(child: Text("D$j", style: TextStyle(color: Colors.white),)),
+      ),
+    );
+  }
+  if(j==0){
+    if(i==transportProblem.length-1){
+      return TableViewCell(
+        child: _CustomContainer(
+          child: Center(child: Text("D", style: TextStyle(color: Colors.white),)),
+        ),
+      );
+    }
+    if(i==transportProblem.length){
+      return TableViewCell(
+        child: _CustomContainer(
+          child: Center(child: Text("P", style: TextStyle(color: Colors.white),)),
+        ),
+      );
+    }
+    return TableViewCell(
+      child: _CustomContainer(
+        child: Center(child: Text("F$i", style: TextStyle(color: Colors.white),)),
+      ),
+    );
+  }
+  if((j==transportProblem.first.length||j==transportProblem.first.length-1) &&(i==transportProblem.length|| i == transportProblem.length-1)){
+    return TableViewCell(child: SizedBox());
   }
 
-  @override
-  double minIntrinsicWidth(Iterable<RenderBox> cells, double containerWidth) {
-    final intrisincWidth = IntrinsicColumnWidth().maxIntrinsicWidth(cells, containerWidth);
-    if(intrisincWidth<=60)return 70;
-    return intrisincWidth + 10;
+  if(j==transportProblem.first.length || j == transportProblem.first.length-1){
+    final isOff = !transportProblem[transportProblem.length-2][j-1].getIsActive()|| 
+      !transportProblem[i-1][transportProblem.first.length-2].getIsActive();
+    return TableViewCell(
+      child: Stack(
+        children: [
+          SizedBox(
+            height: 65,
+            child: Center(child: Text("${transportProblem[i-1][j-1].getValue().toInt()}")),
+          ),
+          if(isOff)Container(
+            color: Colors.blueGrey.withOpacity(0.3),
+          )
+        ],
+      ),
+    );
   }
 
+  if(i==transportProblem.length || i == transportProblem.length-1){
+    final isOff = !transportProblem[transportProblem.length-2][j-1].getIsActive()|| 
+      !transportProblem[i-1][transportProblem.first.length-2].getIsActive();
+
+    return TableViewCell(
+      child: Stack(
+        children: [
+          SizedBox(
+            height: 65,
+            child: Center(child: Text("${transportProblem[i-1][j-1].getValue().toInt()}")),
+          ),
+          if(isOff)Container(
+            color: Colors.blueGrey.withOpacity(0.3),
+          )
+        ],
+      ),
+    );
+  }
+
+  return TableViewCell(
+    child: _CustomCell(
+      cost: transportProblem[i-1][j-1].getValue(),
+      answer: (answers["$i-$j"]!=null)?answers["$i-$j"]:null,
+      isOff: !transportProblem[transportProblem.length-2][j-1].getIsActive()
+      || !transportProblem[i-1][transportProblem.first.length-2].getIsActive(),
+    ),
+  );
 }
