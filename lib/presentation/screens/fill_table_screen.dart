@@ -82,7 +82,7 @@ class _FillTableScreenState extends ConsumerState<FillTableScreen> {
                       child: TableView.builder(
                         diagonalDragBehavior: DiagonalDragBehavior.free,
                         columnCount: widget.destinations+2,
-                        rowCount: widget.sources+2,
+                        rowCount: widget.sources+3,
                         columnBuilder: (index) {
                           return TableSpan(
                             extent: FixedSpanExtent(70),
@@ -156,6 +156,8 @@ TableViewCell _buildCell({required int i, required int j, required int destinati
               ),
       ),
     );
+  }else if(i==sources+2){
+    return TableViewCell(child: SizedBox());
   }
   else if (j == 0) {
     return TableViewCell(

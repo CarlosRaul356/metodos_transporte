@@ -178,6 +178,7 @@ class Vogel {
 						Cell demand = vogelArray[sources][k];
 						if(demand.getValue()>offer.getValue()) {
 							answers.addAll({"${i+1}-${k+1}": offer.getValue().toInt()});
+              cost += offer.getValue()*current.getValue();
 							demand.setValue(demand.getValue() - offer.getValue());
 							offer.setValue(0);
 							turnOffRow(i);
@@ -185,6 +186,7 @@ class Vogel {
 						}
 						if(offer.getValue()> demand.getValue()) {
 							answers.addAll({"${i+1}-${k+1}": demand.getValue().toInt()});
+              cost += demand.getValue()*current.getValue();
 							offer.setValue(offer.getValue()-demand.getValue());
 							demand.setValue(0);
 							turnOffColumn(k);
@@ -192,6 +194,7 @@ class Vogel {
 						}
 						if(offer.getValue() == demand.getValue()) {
 							answers.addAll({"${i+1}-${k+1}": demand.getValue().toInt()});
+              cost += demand.getValue()*current.getValue();
 							offer.setValue(0);
 							demand.setValue(0);
 							turnOffColumn(k);
@@ -216,6 +219,7 @@ class Vogel {
 						Cell demand = vogelArray[sources][i];
 						if(demand.getValue()>offer.getValue()) {
 							answers.addAll({"${k+1}-${i+1}": offer.getValue().toInt()});
+              cost += offer.getValue()*current.getValue();
 							demand.setValue(demand.getValue() - offer.getValue());
 							offer.setValue(0);
 							turnOffRow(k);
@@ -223,6 +227,7 @@ class Vogel {
 						}
 						if(offer.getValue()> demand.getValue()) {
 							answers.addAll({"${k+1}-${i+1}": demand.getValue().toInt()});
+              cost += demand.getValue()*current.getValue();
 							offer.setValue(offer.getValue()-demand.getValue());
 							demand.setValue(0);
 							turnOffColumn(i);
@@ -230,6 +235,7 @@ class Vogel {
 						}
 						if(offer.getValue() == demand.getValue()) {
 							answers.addAll({"${k+1}-${i+1}": demand.getValue().toInt()});
+              cost += demand.getValue()*current.getValue();
 							offer.setValue(0);
 							demand.setValue(0);
 							turnOffColumn(i);
